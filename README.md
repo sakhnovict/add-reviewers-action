@@ -20,12 +20,12 @@ GitHub will add CODEOWNERS as reviewers at the start of a pull request, before a
       onOpenedPullRequest:
         runs-on: ubuntu-latest
         steps:
-        - name: Add Pull Request Reviewers
-        - uses: actions/checkout@v2
-        - uses: ./
-          with:
-            reviewers: $REVIEWERS
-            token: ${{ secrets.GITHUB_TOKEN }}
+          - name: Add Pull Request Reviewers
+          - uses: actions/checkout@v2
+          - uses: sakhnovict/add-reviewers-action@1.0.0
+            with:
+              reviewers: $REVIEWERS
+              token: ${{ secrets.GITHUB_TOKEN }}
 
 ### Action Inputs
 
