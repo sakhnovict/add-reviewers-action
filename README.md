@@ -6,13 +6,26 @@ GitHub will add CODEOWNERS as reviewers at the start of a pull request, before a
 
 ## Usage
 
-```
-- name: Add Pull Request Reviewer
-      uses: sakhnovict/add-reviewers-action@1.0.0
-      with:
-        reviewers: "sakhnovict,another_user"
-        token: ${{ secrets.GITHUB_TOKEN }}
-```
+    name: Add reviewers Example Job
+    on:
+      pull_request:
+        types: [opened, reopened]
+
+    env:
+    # Change variable to add reviewers with comma separator.
+    # Example: `sakhnovict,user1,user2`.
+    REVIEWERS: 'petati'
+
+    jobs:
+      onOpenedPullRequest:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Add Pull Request Reviewers
+        - uses: actions/checkout@v2
+        - uses: ./
+          with:
+            reviewers: $REVIEWERS
+            token: ${{ secrets.GITHUB_TOKEN }}
 
 ### Action Inputs
 
