@@ -6,7 +6,7 @@ on:
 env:
   # Change variable to add reviewers with comma separator.
   # Example: `sakhnovict,user1,user2`.
-  REVIEWERS: 'petati'
+  REVIEWERS: petati
 
 jobs:
   onOpenedPullRequest:

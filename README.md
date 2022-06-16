@@ -14,7 +14,7 @@ GitHub will add CODEOWNERS as reviewers at the start of a pull request, before a
     env:
     # Change variable to add reviewers with comma separator.
     # Example: `sakhnovict,user1,user2`.
-    REVIEWERS: 'petati'
+    REVIEWERS: username
 
     jobs:
       onOpenedPullRequest:
