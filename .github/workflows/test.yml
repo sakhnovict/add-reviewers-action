@@ -4,17 +4,17 @@ on:
     types: [opened, reopened]
 
 env:
- # Change variable to add reviewers with comma separator.
- # Example: `sakhnovict,user1,user2`.
- REVIEWERS: 'petati'
+  # Change variable to add reviewers with comma separator.
+  # Example: `sakhnovict,user1,user2`.
+  REVIEWERS: 'petati'
 
 jobs:
   onOpenedPullRequest:
     runs-on: ubuntu-latest
     steps:
-    - name: Add Pull Request Reviewers
+      - name: Add Pull Request Reviewers
       - uses: actions/checkout@v2
       - uses: ./
-      with:
-        reviewers: $REVIEWERS
-        token: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          reviewers: $REVIEWERS
+          token: ${{ secrets.GITHUB_TOKEN }}
