@@ -1,24 +1,20 @@
-name: 'build-test'
-on: # rebuild any PRs and main branch changes
+name: Add reviewers Example Job
+on:
   pull_request:
-  push:
-    branches:
-      - main
-      - 'releases/*'
+    types: [opened, reopened]
+
+env:
+ # Change variable to add reviewers with comma separator.
+ # Example: `sakhnovict,user1,user2`.
+ REVIEWERS: 'petati'
 
 jobs:
-  build: # make sure build/ci work properly
+  onOpenedPullRequest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: |
-          npm install
-      - run: |
-          npm run all
-  test: # make sure the action works on a clean machine without building
-    runs-on: ubuntu-latest
-    steps:
+    - name: Add Pull Request Reviewers
       - uses: actions/checkout@v2
       - uses: ./
-        with:
-          milliseconds: 1000
+      with:
+        reviewers: $REVIEWERS
+        token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,19 +1,53 @@
-import * as core from '@actions/core'
-import {wait} from './wait'
+import { Octokit } from "@octokit/rest";
+
+import {
+  getInput, setFailed,
+} from '@actions/core';
+import { context } from "@actions/github";
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+    const rawReviewers = getInput('reviewers');
+    const removeRequest = getInput('remove').toLocaleLowerCase() === 'true';
+    const reviewers = rawReviewers.split(',');
+    const token = process.env.GITHUB_TOKEN || getInput('token');
+    const octokit = new Octokit({ auth: `token ${token}`});
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    if (context.payload.pull_request === null) {
+      setFailed('No pull request found');
+      return;
+    }
 
-    core.setOutput('time', new Date().toTimeString())
+    const pullRequestNumber = context.payload.pull_request?.number;
+    const params = {
+      ...context.repo,
+      pull_number: pullRequestNumber,
+      reviewers,
+    };
+
+    const pullNumber = params.pull_number;
+    if (pullNumber) {
+      const preparedParams = {
+        ...params,
+        pull_number: pullNumber,
+      };
+
+      if (removeRequest) {
+        octokit.pulls.deleteReviewRequest(preparedParams);
+        return;
+      }
+
+      octokit.pulls.createReviewRequest(preparedParams);
+
+    } else {
+      setFailed('Pull number required for remove reviewers');
+    }
+
   } catch (error) {
-    if (error instanceof Error) core.setFailed(error.message)
+    if (error instanceof Error) {
+      setFailed(error.message);
+    }
   }
 }
 
-run()
+run();
