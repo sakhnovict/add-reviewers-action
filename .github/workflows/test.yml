@@ -15,5 +15,5 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./
         with:
-          reviewers: '$REVIEWERS'
+          reviewers: ${{ env.REVIEWERS }}
           token: ${{ secrets.GITHUB_TOKEN }}

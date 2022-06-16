@@ -23,7 +23,7 @@ GitHub will add CODEOWNERS as reviewers at the start of a pull request, before a
           - name Add Pull Request Reviewers
             uses: sakhnovict/add-reviewers-action@1.0.0
             with:
-              reviewers: "$REVIEWERS"
+              reviewers: ${{ env.REVIEWERS }}
               token: ${{ secrets.GITHUB_TOKEN }}
 
 ### Action Inputs
